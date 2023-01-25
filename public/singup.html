@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+  </head>
+  <body class="bg-neutral-800 p-24">
+    <h1 class="text-white font-bold text-center text-xl m-4">
+      Hello, Welcome to Singup page
+    </h1>
+    <p class="text-white text-center text-base m-4"></p>
+
+    <form action="" class="text-center">
+      <p class="text-white text-center text-lg m-4">Enter Name:</p>
+      <input type="text" class="h-8 text-lg w-96" id="name" required />
+      <p class="text-white text-center text-lg m-4">Enter Email:</p>
+      <input type="text" class="h-8 text-lg w-96" id="email" required />
+      <p class="text-white text-center text-lg m-4">Enter password:</p>
+      <input type="password" class="h-8 text-lg w-96" id="password" required />
+      <div>
+        <button type="submit" class="bg-sky-500 text-white w-32 p-2 m-4 ...">
+          singup
+        </button>
+      </div>
+    </form>
+    <script>
+      let form = document.querySelector("form");
+      console.log(form)
+      form.addEventListener("submit", (e) => {
+        console.log(e)
+        e.preventDefault();
+        let name = document.getElementById("name").value;
+        let email = document.getElementById("email").value;
+        let password = document.getElementById("password").value;
+        console.log(name, email, password);
+        fetch("/auth/signup", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            email,
+            password,
+            name,
+          }),
+        })
+          .then((response) => {
+            console.log(response);
+            if (response.status != 200) {
+              let body = document.querySelector("body");
+              body.innerHTML =
+                '<h1 class="text-white text-xl text-center">404</h1> <p class= "text-center text-white text-lg"> User alredy exist or Invalid email, name and Password'
+
+            } else {
+              let body = document.querySelector("body");
+              body.innerHTML =
+                '<p class="text-white text-lg text-center"> signup sucecessfully now login </p>';
+                // Redirect to a different page and  load a new document
+                window.location.assign("/auth/protected");
+
+            }
+          })
+          .catch((error) => console.error("Error:", error));
+      });
+    </script>
+  </body>
+</html>

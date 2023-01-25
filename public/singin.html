@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+  </head>
+  <body class="bg-neutral-800 p-24">
+    <h1 class="text-white font-bold text-center text-xl m-4">
+      Hello, Welcome to SignIn page
+    </h1>
+    <p class="text-white text-center text-base m-4"></p>
+
+    <form action="" class="text-center">
+      <p class="text-white text-center text-lg m-4">Enter Email:</p>
+      <input type="text" class="h-8 text-lg w-96" id="email" required />
+      <p class="text-white text-center text-lg m-4">Enter password:</p>
+      <input type="password" class="h-8 text-lg w-96" id="password" required />
+      <div>
+        <button type="submit" class="bg-sky-500 text-white w-32 p-2 m-4 ...">
+          singin
+        </button>
+      </div>
+    </form>
+    <script>
+      let form = document.querySelector("form");
+      form.addEventListener("submit", (e) => {
+        e.preventDefault();
+        let Email = document.getElementById("email").value;
+        let Password = document.getElementById("password").value;
+        console.log(Email, Password);
+
+        fetch("/auth/signin", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            email: Email,
+            password : Password
+          }),
+        }).then((response) => {
+            if(response.status != 200){
+                let body = document.querySelector('body')
+                body.innerHTML = '<h1 class="text-white text-xl text-center">404</h1><p class="text-white text-lg text-center"> Wrong Credentials </p>'
+                
+            }else{
+                let body = document.querySelector('body')
+                body.innerHTML = '<p class="text-white text-lg text-center"> Loged In sucecessfully </p>'
+            }
+        })
+          .catch((error) => console.error("Error:", error));
+      });
+    </script>
+  </body>
+</html>
