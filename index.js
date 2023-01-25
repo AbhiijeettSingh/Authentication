@@ -13,6 +13,6 @@ app.use(express.static('public'))
 app.use('/auth',authRouter)
 
 
-app.listen(5000,(req,res)=>{
+app.listen(process.env.PORT,(req,res)=>{
     console.log('server is listening')
 })
